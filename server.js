@@ -17,19 +17,19 @@ app.get("/", function (request, response) {
 });
 
 //START OF YOUR CODE...
-app.get("/quotes", (request,response) => {
+app.get("/quotes", (request, response) => {
   response.json(quotes);
 });
 
-app.get("/quotes/random", (request,response) => {
+app.get("/quotes/random", (request, response) => {
   response.send(pickFromArray(quotes));
 });
 
-app.get("/quotes/search", (request,response) => {
+app.get("/quotes/search", (request, response) => {
   const term = request.query.term;
-  function testF(term){
-    const test=quotes.filter( ({author}) => author === term );
-    return(test);
+  function testF(x) {
+    const test = quotes.filter(({ author }) => author.toLowerCase().indexOf(x.toLowerCase()) >= 0);
+    return (test);
   }
   response.send(testF(term));
 });
@@ -49,6 +49,6 @@ function pickFromArray(arr) {
 }
 console.log(pickFromArray(quotes));
 //Start our server so that it listens for HTTP requests!
-const listener = app.listen(process.env.PORT, function () {
+const listener = app.listen(process.env.PORT || 5000, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
