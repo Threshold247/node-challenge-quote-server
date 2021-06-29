@@ -17,6 +17,23 @@ app.get("/", function (request, response) {
 });
 
 //START OF YOUR CODE...
+app.get("/quotes", (request,response) => {
+  response.json(quotes);
+});
+
+app.get("/quotes/random", (request,response) => {
+  response.send(pickFromArray(quotes));
+});
+
+app.get("/quotes/search", (request,response) => {
+  const term = request.query.term;
+  function testF(term){
+    const test=quotes.filter( ({author}) => author === term );
+    return(test);
+  }
+  response.send(testF(term));
+});
+
 
 //...END OF YOUR CODE
 
@@ -24,10 +41,13 @@ app.get("/", function (request, response) {
 //example: pickFromArray([1,2,3,4]), or
 //example: pickFromArray(myContactsArray)
 //
+
+
+
 function pickFromArray(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
-
+console.log(pickFromArray(quotes));
 //Start our server so that it listens for HTTP requests!
 const listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
