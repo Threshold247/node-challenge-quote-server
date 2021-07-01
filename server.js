@@ -26,12 +26,17 @@ app.get("/quotes/random", (request, response) => {
 });
 
 app.get("/quotes/search", (request, response) => {
+  console.log(`${request.protocol}://${request.get('host')} ${request.originalUrl}`)
   const term = request.query.term;
   function testF(x) {
-    const test = quotes.filter(({ author }) => author.toLowerCase().indexOf(x.toLowerCase()) >= 0);
+    const test = quotes.filter(({ quote }) => (quote).toLowerCase().indexOf(x.toLowerCase()) >= 0);
     return (test);
   }
-  response.send(testF(term));
+  if(term){
+    response.json(testF(term));
+    } else {
+    response.status(400).send(`You did not submit a term`)
+  }
 });
 
 
@@ -46,9 +51,9 @@ app.get("/quotes/search", (request, response) => {
 
 function pickFromArray(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
-}
-console.log(pickFromArray(quotes));
+};
+
 //Start our server so that it listens for HTTP requests!
-const listener = app.listen(process.env.PORT || 5000, function () {
+const listener = app.listen(process.env.PORT || 3000, function () {
   console.log("Your app is listening on port " + listener.address().port);
 });
