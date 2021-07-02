@@ -29,8 +29,10 @@ app.get("/quotes/search", (request, response) => {
   console.log(`${request.protocol}://${request.get('host')} ${request.originalUrl}`)
   const term = request.query.term;
   function testF(x) {
-    const test = quotes.filter(({ quote }) => (quote).toLowerCase().indexOf(x.toLowerCase()) >= 0);
-    return (test);
+      const test=quotes.filter(({quote, author}) =>
+        (quote).toLowerCase().indexOf(x.toLowerCase()) >= 0 ||
+        (author).toLowerCase().indexOf(x.toLowerCase()) >= 0)
+      return test;
   }
   if(term){
     response.json(testF(term));
